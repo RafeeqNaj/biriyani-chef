@@ -1,0 +1,148 @@
+body {
+    font-family: 'Georgia', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff3e0;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #d32f2f;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-family: 'Merriweather', serif;
+    font-size: 2.5em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 1em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hero {
+    background: url('images/index-background.jpg') no-repeat center center/cover;
+    color: white;
+    padding: 4em 0;
+    text-align: center;
+    height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-shadow: 2px 2px 4px #000000; /* Add text shadow for better visibility */
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin: 0.5em 0;
+}
+
+.hero p {
+    font-size: 1.5em;
+    margin: 0.5em 0;
+}
+
+.menu {
+    background-color: #333; /* Dark background for better text visibility */
+    color: white;
+    padding: 2em 0;
+    text-align: center;
+    min-height: calc(100vh - 160px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 2em;
+}
+
+.menu img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 1em;
+    border-radius: 10px;
+}
+
+.cultural-info {
+    margin-top: 2em;
+    text-align: left;
+}
+
+.order {
+    background: url('images/other-background.jpg') no-repeat center center/cover;
+    background-size: cover;
+    color: white;
+    padding: 2em 0;
+    text-align: center;
+    min-height: calc(100vh - 160px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-shadow: 2px 2px 4px #000000; /* Add text shadow for better visibility */
+}
+
+footer {
+    background-color: #d32f2f;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 0.5em 0;
+    }
+
+    .hero, .menu, .order {
+        padding: 2em 0;
+        min-height: calc(100vh - 120px);
+    }
+
+    .menu img, .order img {
+        width: 100px;
+        height: 100px;
+    }
+
+    footer {
+        position: static;
+        padding: 1em 0;
+    }
+}
