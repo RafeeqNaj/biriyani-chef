@@ -1,96 +1,98 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('orderButton').addEventListener('click', function() {
-        document.getElementById('orderFormContainer').style.display = 'block';
-    });
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Now</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Place Your Order</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="order.html">Order Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="order">
+            <div class="container">
+                <h2>Order Your Favorite Food</h2>
+                <p>Call us at: <a href="tel:+1234567890">+1234567890</a></p>
+                <p>Or click the button below to order online:</p>
+                <button id="orderButton">Order Online</button>
+                <div id="orderFormContainer" style="display:none;">
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
 
-function addItem() {
-    const menu = document.querySelector('.menu').value;
-    const quantity = document.querySelector('.quantity').value;
-    const price = parseFloat(document.querySelector('.menu option:checked').getAttribute('data-price'));
-    const itemName = document.querySelector('.menu option:checked').text;
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
-    if (quantity > 0) {
-        const selectedItems = document.getElementById('selectedItems');
-        const row = document.createElement('tr');
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
 
-        row.innerHTML = `
-            <td>${itemName}</td>
-            <td><input type="number" class="item-quantity" value="${quantity}" min="1" onchange="updateItem(this)"></td>
-            <td class="item-price">£${(price * quantity).toFixed(2)}</td>
-            <td><button type="button" onclick="removeItem(this)">Remove</button></td>
-        `;
+                        <div class="form-group">
+                            <label for="menu">Menu Items:</label>
+                            <div id="menuItems">
+                                <div class="menuItem">
+                                    <select class="menu" name="menu">
+                                        <option value="malabar-biryani" data-price="11.99">Chef Special Malabar Biriyani - £11.99</option>
+                                        <option value="spicy-chicken-fried-biryani" data-price="10.99">Spicy Chicken Fried Biriyani - £10.99</option>
+                                        <option value="prawns-biryani" data-price="10.99">South Indian Prawns Biriyani - £10.99</option>
+                                        <option value="ghee-rice-kabab" data-price="10.99">Ghee Rice and Chicken Kabab Combo - £10.99</option>
+                                        <option value="chicken-kabab" data-price="6.99">Chicken Kabab - £6.99</option>
+                                    </select>
+                                    <input type="number" class="quantity" name="quantity" min="1" value="1">
+                                    <button type="button" onclick="addItem()">Add Item</button>
+                                </div>
+                            </div>
+                        </div>
 
-        row.setAttribute('data-price', price);
-        selectedItems.appendChild(row);
+                        <div class="form-group">
+                            <label for="coupon">Coupon Code:</label>
+                            <input type="text" id="coupon" name="coupon" onchange="updateTotal()">
+                        </div>
 
-        updateTotal();
-    }
-}
+                        <div class="form-group">
+                            <label>Selected Items:</label>
+                            <table id="selectedItemsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="selectedItems"></tbody>
+                            </table>
+                        </div>
 
-function updateItem(element) {
-    const row = element.closest('tr');
-    const price = parseFloat(row.getAttribute('data-price'));
-    const quantity = element.value;
-    const itemPrice = row.querySelector('.item-price');
+                        <p id="totalPrice">Total Price: £0</p>
 
-    itemPrice.textContent = `£${(price * quantity).toFixed(2)}`;
-    updateTotal();
-}
-
-function removeItem(button) {
-    const row = button.closest('tr');
-    row.remove();
-    updateTotal();
-}
-
-function updateTotal() {
-    const selectedItems = document.querySelectorAll('#selectedItems tr');
-    let totalPrice = 0;
-
-    selectedItems.forEach(item => {
-        const itemPrice = parseFloat(item.querySelector('.item-price').textContent.replace('£', ''));
-        totalPrice += itemPrice;
-    });
-
-    const coupon = document.getElementById('coupon').value;
-    if (coupon === 'DISCOUNT10') {
-        totalPrice *= 0.9; // 10% discount
-    }
-
-    document.getElementById('totalPrice').innerText = `Total Price: £${totalPrice.toFixed(2)}`;
-}
-
-document.getElementById('orderForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const selectedItems = document.querySelectorAll('#selectedItems tr');
-    const orders = [];
-
-    selectedItems.forEach(item => {
-        const menu = item.querySelector('td').textContent;
-        const quantity = item.querySelector('.item-quantity').value;
-        orders.push({ menu, quantity });
-    });
-
-    const totalPrice = document.getElementById('totalPrice').innerText.split('£')[1];
-
-    fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPOSITORY/dispatches', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'Authorization': 'token YOUR_GITHUB_TOKEN',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            event_type: 'order_placed',
-            client_payload: { name, email, phone, orders, totalPrice }
-        })
-    })
-    .then(response => response.json())
-    .then(data => alert('Order placed successfully!'))
-    .catch(error => console.error('Error:', error));
-});
+                        <button type="submit">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>Contact us at: <a href="tel:+1234567890">+1234567890</a></p>
+        </div>
+    </footer>
+</body>
+</html>
